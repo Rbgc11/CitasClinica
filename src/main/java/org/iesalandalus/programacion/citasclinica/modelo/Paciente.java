@@ -37,11 +37,15 @@ public class Paciente {
 	}
 
 	public void setNombre(String nombre) {
-		if (nombre == null) {
+		if (nombre == null) 
 			throw new NullPointerException("ERROR: El nombre de un paciente no puede ser nulo o vacío.");
-		} else {
-			this.nombre = nombre;
-		}
+		 
+		
+		if (nombre == null || nombre.trim().isEmpty())
+			throw new NullPointerException("ERROR: El nombre de un paciente no puede ser nulo o vacío.");
+		
+			this.nombre = formateaNombre(nombre);
+
 	}
 	//3.2 Método formateaNombre
 		private String formateaNombre(String nombre) {
@@ -68,12 +72,15 @@ public class Paciente {
 	
 	
 	private void setDni(String dni) {
-		if (dni == null) {
+		if (dni == null || dni.trim().isEmpty())
 			throw new NullPointerException("ERROR: El DNI de un paciente no puede ser nulo o vacío.");
-		} else {
-			this.dni = dni;
-		}
-	}
+		
+		//!dni.matcher(ER_DNI)
+		if (!dni.matches(ER_DNI))
+			throw new IllegalArgumentException("ERROR: El DNI no tiene un formato válido.");
+		
+		this.dni = dni;
+	} 
 	
 	
 
@@ -126,7 +133,7 @@ public class Paciente {
 	}
 	
 	//3.7 Métodos equals y hashCode
-	@Override
+	@Override //MODIFICAR
 	public int hashCode() {
 		return Objects.hash(dni, nombre, telefono);
 	}
@@ -140,8 +147,7 @@ public class Paciente {
 		if (getClass() != obj.getClass())
 			return false;
 		Paciente other = (Paciente) obj;
-		return Objects.equals(dni, other.dni) && Objects.equals(nombre, other.nombre)
-				&& Objects.equals(telefono, other.telefono);
+		return Objects.equals(dni, other.dni);
 	}
 
 	//3.9 Método toString

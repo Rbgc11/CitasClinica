@@ -29,7 +29,7 @@ public class Consola {
 		}
 		
 		// 7.3 Método elegirOpcion
-
+		//Optiones values 
 		public static Opciones elegirOpcion() {
 			int opcion = 0;
 			do {

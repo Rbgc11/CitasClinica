@@ -37,7 +37,7 @@ public class Cita {
 	}
 	
 	public Paciente getPaciente() {
-		return paciente;
+		return new Paciente(paciente);
 	}
 
 
@@ -67,7 +67,7 @@ public class Cita {
 		if (getClass() != obj.getClass())
 			return false;
 		Cita other = (Cita) obj;
-		return Objects.equals(fechaHora, other.fechaHora) && Objects.equals(paciente, other.paciente);
+		return Objects.equals(fechaHora, other.fechaHora);
 	}
 	
 

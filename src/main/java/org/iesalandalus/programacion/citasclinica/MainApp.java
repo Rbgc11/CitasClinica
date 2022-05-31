@@ -22,9 +22,16 @@ public class MainApp {
 		
 		public static void main(String[] args) throws OperationNotSupportedException {
 
-			Consola.mostrarMenu();
-			ejecutarOpcion(Consola.elegirOpcion());
-		}
+			Opciones opcion;
+			
+			do {
+				System.out.println("Programa para gestionar las citas de la clínica.");
+				Consola.mostrarMenu();				
+				opcion = Consola.elegirOpcion();
+				ejecutarOpcion(opcion);
+				
+			} while (opcion != Opciones.SALIR);
+		} 
 		// 8.7 Método ejecutarOpción
 
 		private static void ejecutarOpcion(Opciones opcion) throws OperationNotSupportedException {
@@ -74,20 +81,23 @@ public class MainApp {
 		// 8.3 Método buscarCita
 
 		private static void buscarCita() throws OperationNotSupportedException {
-
-			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+			
+		
+		try {
 			LocalDateTime fecha = Consola.leerFechaHora();
-
 			Paciente paciente = new Paciente("Nombre", "73669103B", "689383982");
 			Cita cita = new Cita(paciente, fecha);
 
-			if ((cita = citasClinica.buscar(cita)) == null) {
-				System.out.println("No existen citas para esa fecha: " + fecha.format(formato));
-			} else {
-				System.out.println(cita);
-					} catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException ex) {
-						System.out.println("Se ha producido este error: " + ex.getMessage());
-						ejecutarOpcion(Consola.elegirOpcion());
+			Cita citaBuscada = citasClinica.buscar(cita);
+			
+			if (citaBuscada == null)
+				System.out.println(" No existe la cita ");
+			else 
+				System.out.println(citaBuscada);
+			
+		} catch (IllegalArgumentException | NullPointerException e) {
+			System.out.println(e.getMessage());
+		}
 		}
 		
 		// 8.4 Método borrarCita
@@ -111,45 +121,43 @@ public class MainApp {
 		// 8.5 Método mostrarCitas
 
 		private static void mostrarCitas() throws OperationNotSupportedException {
-			boolean existenCitas = false;
-
-			try {
-				for (int i = 0; i < citasClinica.getTamano(); i++) {
-					System.out.println(citasClinica.getCitas()[i]);
-					existenCitas = true;
+			Cita[] citas = citasClinica.getCitas();
+			int citasMostrar = 0;
+			
+			for (int i = 0; i < citas.length; i++) {
+				if(citas[i] != null) {
+					System.out.println(citas[i]);
+					citasMostrar++;
 				}
-				if (hayCitas == false) {
-					System.out.println("No existen citas");
-				}
-
-			} catch (NullPointerException nul) {
-				System.out.println(nul.getMessage());
 			}
-
+			if (citasMostrar == 0) {
+				System.out.println("No hay citas para ese dia");
+			} else  {
+				System.out.println("");
+			
 		}
+	}
 
 		
 		// 8.6. Método mostrarCitasDia
 
 		private static void mostrarCitasDia() throws OperationNotSupportedException {
-			LocalDate fecha = Consola.leerFecha();
-			Cita[] citasFecha = citasClinica.getCitas(fecha);
-			try {
-				boolean existenCitas = false;
-				for (int i = 0; i < citasClinica.getTamano(); i++) {
-					if (citasFecha[i].getFechaHora().toLocalDate().equals(fecha)) {
-						System.out.println(citasFecha()[i]);
-						existenCitas = true;
+				
+				Cita[] citasDia	 = citasClinica.getCitas(Consola.leerFecha());
+				int citasMostrar = 0;
+				
+				for (int i = 0; i < citasDia.length; i++) {
+					if(citasDia[i] != null) {
+						System.out.println(citasDia[i]);
+						citasMostrar++;
 					}
 				}
-				if (existenCitas == false) {
-					System.out.println("No existen citas de ese día.");
+				if (citasMostrar == 0) {
+					System.out.println("No hay citas para ese dia");
+				} else  {
+					System.out.println("");
 				}
-			} catch (NullPointerException nul) {
-				System.out.println(nul.getMessage());
 			}
-		}
-		
 	
 }
 	
